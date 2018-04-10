@@ -64,7 +64,7 @@ class TestProcess {
   /// Completes to [_process]'s exit code if it's exited, otherwise completes to
   /// `null` immediately.
   Future<int> get _exitCodeOrNull async =>
-      await exitCode.timeout(Duration.ZERO, onTimeout: () => null);
+      await exitCode.timeout(Duration.zero, onTimeout: () => null);
 
   /// Starts a process.
   ///
@@ -165,7 +165,7 @@ class TestProcess {
 
     // Wait a timer tick to ensure that all available lines have been flushed to
     // [_log].
-    await new Future.delayed(Duration.ZERO);
+    await new Future.delayed(Duration.zero);
 
     var buffer = new StringBuffer();
     buffer.write("Process `$description` ");
