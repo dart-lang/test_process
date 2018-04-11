@@ -73,7 +73,7 @@ class TestProcess {
   ///
   /// [description] is a string description of this process; it defaults to the
   /// command-line invocation. [encoding] is the [Encoding] that will be used
-  /// for the process's input and output; it defaults to [UTF8].
+  /// for the process's input and output; it defaults to [utf8].
   ///
   /// If [forwardStdio] is `true`, the process's stdout and stderr will be
   /// printed to the console as they appear. This is only intended to be set
@@ -100,7 +100,7 @@ class TestProcess {
       description = "$humanExecutable ${arguments.join(" ")}";
     }
 
-    encoding ??= UTF8;
+    encoding ??= utf8;
     return new TestProcess(process, description,
         encoding: encoding, forwardStdio: forwardStdio);
   }
