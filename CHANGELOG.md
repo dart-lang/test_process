@@ -1,6 +1,6 @@
 ## 1.0.2
 
-- Updated SDK version to 2.0.0-dev.17.0
+* Update SDK version to 2.0.0-dev.17.0
 
 ## 1.0.1
 
