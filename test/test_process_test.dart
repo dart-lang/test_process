@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
@@ -34,11 +35,35 @@ void main() {
     });
   });
 
-  test("kill() stops the process", () async {
-    var process = await startDartProcess('while (true);');
+  group("kill() stops the process", () {
+    test("parent", () async {
+      var process = await startDartProcess('while (true);');
 
-    // Should terminate.
-    await process.kill();
+      // Should terminate.
+      await process.kill();
+    });
+
+    test("child", () async {
+      var childPath = p.join(d.sandbox, 'child.dart');
+      File(childPath).writeAsStringSync('''
+          void main() {
+            while (true);
+          }
+        ''');
+
+      var process = await startDartProcess('''
+          var process = Process.start(${json.encode(childPath)});
+          print(process.pid);
+        ''');
+
+      var pid = int.parse(await process.stdout.next);
+
+      // Should terminate.
+      await process.kill();
+
+      expect(Process.killPid(pid), isFalse,
+          reason: "Child process should no longer be running.");
+    });
   });
 
   group("stdout and stderr", () {
