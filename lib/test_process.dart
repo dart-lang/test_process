@@ -30,13 +30,13 @@ class TestProcess {
   ///
   /// A copy of the underlying stream can be retreived using [stdoutStream].
   StreamQueue<String> get stdout => _stdout;
-  StreamQueue<String> _stdout;
+  late StreamQueue<String> _stdout;
 
   /// A [StreamQueue] that emits each line of stderr from the process.
   ///
   /// A copy of the underlying stream can be retreived using [stderrStream].
   StreamQueue<String> get stderr => _stderr;
-  StreamQueue<String> _stderr;
+  late StreamQueue<String> _stderr;
 
   /// A splitter that can emit new copies of [stdout].
   final StreamSplitter<String> _stdoutSplitter;
@@ -62,8 +62,9 @@ class TestProcess {
 
   /// Completes to [_process]'s exit code if it's exited, otherwise completes to
   /// `null` immediately.
-  Future<int> get _exitCodeOrNull async =>
-      await exitCode.timeout(Duration.zero, onTimeout: () => null);
+  Future<int?> get _exitCodeOrNull => exitCode
+      .then<int?>((value) => value)
+      .timeout(Duration.zero, onTimeout: () => null);
 
   /// Starts a process.
   ///
@@ -79,12 +80,12 @@ class TestProcess {
   /// temporarily to help when debugging test failures.
   static Future<TestProcess> start(
       String executable, Iterable<String> arguments,
-      {String workingDirectory,
-      Map<String, String> environment,
+      {String? workingDirectory,
+      Map<String, String>? environment,
       bool includeParentEnvironment = true,
       bool runInShell = false,
-      String description,
-      Encoding encoding,
+      String? description,
+      Encoding encoding = utf8,
       bool forwardStdio = false}) async {
     var process = await Process.start(executable, arguments.toList(),
         workingDirectory: workingDirectory,
@@ -99,7 +100,6 @@ class TestProcess {
       description = "$humanExecutable ${arguments.join(" ")}";
     }
 
-    encoding ??= utf8;
     return TestProcess(process, description,
         encoding: encoding, forwardStdio: forwardStdio);
   }
@@ -112,7 +112,7 @@ class TestProcess {
   /// This is protected, which means it should only be called by subclasses.
   @protected
   TestProcess(Process process, this.description,
-      {Encoding encoding, bool forwardStdio = false})
+      {Encoding encoding = utf8, bool forwardStdio = false})
       : _process = process,
         _stdoutSplitter = StreamSplitter(process.stdout
             .transform(encoding.decoder)

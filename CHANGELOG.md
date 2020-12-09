@@ -1,6 +1,7 @@
-## 1.0.6
+## 1.1.0
 
-* Require Dart >=2.1
+* Migrate to null safety.
+* Require Dart >=2.12.
 
 ## 1.0.5
 
