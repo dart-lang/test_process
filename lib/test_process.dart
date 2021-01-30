@@ -62,7 +62,8 @@ class TestProcess {
 
   /// Completes to [_process]'s exit code if it's exited, otherwise completes to
   /// `null` immediately.
-  Future<int?> get _exitCodeOrNull async => await exitCode.then<int?>((value) => value)
+  Future<int?> get _exitCodeOrNull async => await exitCode
+      .then<int?>((value) => value)
       .timeout(Duration.zero, onTimeout: () => null);
 
   /// Starts a process.
@@ -84,7 +85,7 @@ class TestProcess {
       bool includeParentEnvironment = true,
       bool runInShell = false,
       String? description,
-      Encoding? encoding,
+      Encoding encoding = utf8,
       bool forwardStdio = false}) async {
     var process = await Process.start(executable, arguments.toList(),
         workingDirectory: workingDirectory,
@@ -99,7 +100,6 @@ class TestProcess {
       description = "$humanExecutable ${arguments.join(" ")}";
     }
 
-    encoding ??= utf8;
     return TestProcess(process, description,
         encoding: encoding, forwardStdio: forwardStdio);
   }
