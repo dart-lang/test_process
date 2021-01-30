@@ -29,14 +29,14 @@ class TestProcess {
   /// A [StreamQueue] that emits each line of stdout from the process.
   ///
   /// A copy of the underlying stream can be retreived using [stdoutStream].
-  StreamQueue<String>? get stdout => _stdout;
-  StreamQueue<String>? _stdout;
+  StreamQueue<String> get stdout => _stdout;
+  late StreamQueue<String> _stdout;
 
   /// A [StreamQueue] that emits each line of stderr from the process.
   ///
   /// A copy of the underlying stream can be retreived using [stderrStream].
-  StreamQueue<String>? get stderr => _stderr;
-  StreamQueue<String>? _stderr;
+  StreamQueue<String> get stderr => _stderr;
+  late StreamQueue<String> _stderr;
 
   /// A splitter that can emit new copies of [stdout].
   final StreamSplitter<String> _stdoutSplitter;
