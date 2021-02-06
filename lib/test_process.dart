@@ -28,15 +28,13 @@ class TestProcess {
 
   /// A [StreamQueue] that emits each line of stdout from the process.
   ///
-  /// A copy of the underlying stream can be retreived using [stdoutStream].
-  StreamQueue<String> get stdout => _stdout;
-  late StreamQueue<String> _stdout;
+  /// A copy of the underlying stream can be retrieved using [stdoutStream].
+  late final StreamQueue<String> stdout = StreamQueue(stdoutStream());
 
   /// A [StreamQueue] that emits each line of stderr from the process.
   ///
-  /// A copy of the underlying stream can be retreived using [stderrStream].
-  StreamQueue<String> get stderr => _stderr;
-  late StreamQueue<String> _stderr;
+  /// A copy of the underlying stream can be retrieved using [stderrStream].
+  late final StreamQueue<String> stderr = StreamQueue(stderrStream());
 
   /// A splitter that can emit new copies of [stdout].
   final StreamSplitter<String> _stdoutSplitter;
@@ -123,9 +121,6 @@ class TestProcess {
     addTearDown(_tearDown);
     expect(_process.exitCode.then((_) => _logOutput()), completes,
         reason: 'Process `$description` never exited.');
-
-    _stdout = StreamQueue(stdoutStream());
-    _stderr = StreamQueue(stderrStream());
 
     // Listen eagerly so that the lines are interleaved properly between the two
     // streams.
