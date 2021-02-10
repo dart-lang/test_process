@@ -46,7 +46,7 @@ class TestProcess {
   IOSink get stdin => _process.stdin;
 
   /// A buffer of mixed stdout and stderr lines.
-  final _log = <String>[];
+  final List<String> _log = <String>[];
 
   /// Whether [_log] has been passed to [printOnFailure] yet.
   bool _loggedOutput = false;
@@ -110,7 +110,7 @@ class TestProcess {
   /// This is protected, which means it should only be called by subclasses.
   @protected
   TestProcess(Process process, this.description,
-      {required Encoding encoding, bool forwardStdio = false})
+      {Encoding encoding= utf8, bool forwardStdio = false})
       : _process = process,
         _stdoutSplitter = StreamSplitter(process.stdout
             .transform(encoding.decoder)
