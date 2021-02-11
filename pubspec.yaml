@@ -1,5 +1,5 @@
 name: test_process
-version: 2.0.0-nullsafety.0
+version: 2.0.0
 
 description: A package for testing subprocesses.
 homepage: https://github.com/dart-lang/test_process
